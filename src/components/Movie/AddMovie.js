@@ -1,6 +1,6 @@
 // src/components/AddMovie.js
 import { useState } from "react";
-import { useAddMovie } from "../api/movies";
+import { useAddMovie } from "../../api/movies";
 
 function AddMovie() {
   const [isOpen, setIsOpen] = useState(false);
