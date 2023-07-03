@@ -24,7 +24,20 @@ export function useGetMovieById(id) {
     }
   );
 }
-
+export function useRecommendationById(id) {
+  return useQuery(
+    ["recommended", id],
+    () =>
+      axios
+        .get(`/movies/recommendations/${id}/?page=1&limit=6`)
+        .then((res) => res.data),
+    {
+      onError: (error) => {
+        window.alert(error.response.data.error.message);
+      },
+    }
+  );
+}
 export function useAddMovie() {
   return useMutation(
     (data) => axios.post("/movies", data).then((res) => res.data),

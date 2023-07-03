@@ -45,7 +45,7 @@ function ReviewList() {
   if (isError) return <div>Error loading reviews</div>;
 
   const reviews = reviewsData.reviews;
-  console.log(editReviewMutation);
+
   const handleChangeStatus = () => {
     if (afterEditReview && editReviewMutation.isError) {
       return (

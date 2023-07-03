@@ -1,18 +1,14 @@
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-// Import the custom hook
-
 import AddMovie from "./AddMovie";
 import StaffContext from "../../context/StaffContext";
-
 import { useAddRemoveWatchlist } from "../../api/watchlist";
 
-const MovieCard = ({ movies, error, status }) => {
+const RecommendedCard = ({ movies, error, status }) => {
   const [staff, setStaff] = useContext(StaffContext);
   const navigate = useNavigate();
 
   const addRemoveWatchlist = useAddRemoveWatchlist(); // Call the custom hook
-
   const [addingReview, setAddingReview] = useState(null);
   const addingToWatchlist = () => {
     if (addRemoveWatchlist?.data?.error?.message)
@@ -39,26 +35,26 @@ const MovieCard = ({ movies, error, status }) => {
   if (status === "error") {
     return <div>Error: {error.message}</div>;
   }
+  if (status === "loading") {
+    return <div>loading...</div>;
+  }
 
   return (
     <>
-      {staff && (
-        <div className="mx-4 mt-5">
-          <AddMovie />
-        </div>
-      )}
       <div className="grid grid-cols-3 gap-2 m-3">
-        {movies.map((movie) => (
-          <div className="border p-4" key={movie._id}>
-            <h2 className="font-bold text-lg">{movie.name}</h2>
-            <p className="text-[#ee9bbc] ">rating: {movie.averageRate}</p>
+        {movies?.map((movie) => (
+          <div className="border p-4" key={movie.movie._id}>
+            <h2 className="font-bold text-lg">{movie.movie.name}</h2>
+            <p className="text-[#ee9bbc] ">rating: {movie.movie.averageRate}</p>
             <p className="text-sm text-gray-500">
-              {movie.releaseDate.replace("T00:00:00.000Z", "")}
+              {movie.releaseDate
+                ? movie.releaseDate.replace("T00:00:00.000Z", "")
+                : ""}
             </p>
             <button
               onClick={() => {
-                setAddingReview(movie._id);
-                handleAddRemoveWatchlist(movie._id);
+                setAddingReview(movie.movie._id);
+                handleAddRemoveWatchlist(movie.movie._id);
               }} // Call the callback function
               className="bg-blue-500 text-white px-2 py-1 rounded"
             >
@@ -66,13 +62,13 @@ const MovieCard = ({ movies, error, status }) => {
             </button>
             <button
               className="bg-blue-500 text-white m-4 px-2 py-1 rounded"
-              onClick={() => navigate(`/movies/${movie._id}`)}
+              onClick={() => navigate(`/movies/${movie.movie._id}`)}
             >
               View Details
             </button>
             <div>
               {addingReview &&
-                addingReview === movie._id &&
+                addingReview === movie.movie._id &&
                 addingToWatchlist()}
             </div>
           </div>
@@ -82,4 +78,4 @@ const MovieCard = ({ movies, error, status }) => {
   );
 };
 
-export default MovieCard;
+export default RecommendedCard;
