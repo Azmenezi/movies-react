@@ -14,14 +14,23 @@ const MovieCard = ({ movies, error, status }) => {
   const addRemoveWatchlist = useAddRemoveWatchlist(); // Call the custom hook
 
   const [addingReview, setAddingReview] = useState(null);
+
   const addingToWatchlist = () => {
-    if (addRemoveWatchlist?.data?.error?.message)
+    if (
+      addRemoveWatchlist?.data?.message.includes(
+        "was succesfully removed from your watchlist"
+      )
+    )
       return (
         <div className="bg-red-400 flex justify-center items-center h-8 rounded text-white">
           succesfully removed from watchlist
         </div>
       );
-    if (addRemoveWatchlist?.data?.message)
+    if (
+      addRemoveWatchlist?.data?.message.includes(
+        "was succesfully added to your watchlist"
+      )
+    )
       return (
         <div className="bg-green-400  flex justify-center items-center h-8 rounded text-white">
           succesfully added to your watchlist

@@ -7,6 +7,7 @@ import {
 import { FakeCard } from "../Loading/FakeCard";
 import UserContext from "../../context/UserContext";
 import { useNavigate } from "react-router-dom";
+import { handleChangeStatus } from "../../func/functions";
 
 function ReviewList() {
   const [user, setUser] = useContext(UserContext);
@@ -46,51 +47,6 @@ function ReviewList() {
 
   const reviews = reviewsData.reviews;
 
-  const handleChangeStatus = () => {
-    if (afterEditReview && editReviewMutation.isError) {
-      return (
-        <div className="bg-purple-400 flex justify-center items-center h-8 rounded text-white">
-          something went wrong while editing!
-        </div>
-      );
-    }
-    if (afterEditReview && editReviewMutation.isSuccess) {
-      return (
-        <div className="bg-green-400 flex justify-center items-center h-8 rounded text-white">
-          review was edited succesfully!
-        </div>
-      );
-    }
-    if (afterEditReview && editReviewMutation.isLoading) {
-      return (
-        <div className="bg-blue-400 flex justify-center items-center h-8 rounded text-white">
-          editing your review...
-        </div>
-      );
-    }
-    if (deletingReview && deleteReviewMutation.isError) {
-      return (
-        <div className="bg-purple-400 flex justify-center items-center h-8 rounded text-white">
-          something went wrong while deleting!
-        </div>
-      );
-    }
-    if (deletingReview && deleteReviewMutation.isSuccess) {
-      return (
-        <div className="bg-green-400 flex justify-center items-center h-8 rounded text-white">
-          review was deleted succesfully!
-        </div>
-      );
-    }
-    if (deletingReview && deleteReviewMutation.isLoading) {
-      return (
-        <div className="bg-blue-400 flex justify-center items-center h-8 rounded text-white">
-          deleting your review...
-        </div>
-      );
-    }
-  };
-
   if (!user) return navigate("/");
   return (
     <div className="p-4">
@@ -129,7 +85,14 @@ function ReviewList() {
               </button>
               {deletingReview?._id === review._id ||
               afterEditReview?._id === review._id ? (
-                <div>{handleChangeStatus()}</div>
+                <div>
+                  {handleChangeStatus(
+                    afterEditReview,
+                    editReviewMutation,
+                    deletingReview,
+                    deleteReviewMutation
+                  )}
+                </div>
               ) : (
                 <></>
               )}

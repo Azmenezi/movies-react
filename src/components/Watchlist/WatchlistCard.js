@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useAddRemoveWatchlist } from "../../api/watchlist";
 import { useState } from "react";
+import { addingToWatchlist } from "../../func/functions";
 // Import the custom hook
 
 const WatchlistCard = ({ watchlist, error, status }) => {
@@ -18,20 +19,8 @@ const WatchlistCard = ({ watchlist, error, status }) => {
       console.error("Error adding/removing from watchlist:", error);
     }
   };
-  const addingToWatchlist = () => {
-    if (addRemoveWatchlist?.data?.error?.message)
-      return (
-        <div className="bg-red-400 flex justify-center items-center h-8 rounded text-white">
-          succesfully removed from watchlist
-        </div>
-      );
-    if (addRemoveWatchlist?.data?.message)
-      return (
-        <div className="bg-green-400  flex justify-center items-center h-8 rounded text-white">
-          succesfully added to your watchlist
-        </div>
-      );
-  };
+
+  
   return (
     <>
       <div className="grid grid-cols-3 gap-2 m-3">
@@ -62,7 +51,7 @@ const WatchlistCard = ({ watchlist, error, status }) => {
             <div>
               {addingReview &&
                 addingReview === movie._id &&
-                addingToWatchlist()}
+                addingToWatchlist(addRemoveWatchlist)}
             </div>
           </div>
         ))}

@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from "react";
 import { useAddReview } from "../../api/reviews";
+import { handleChange } from "../../func/functions";
 
 const AddReview = ({ movie }) => {
   const addReviewMutation = useAddReview();
@@ -12,6 +13,9 @@ const AddReview = ({ movie }) => {
     },
     [addReviewMutation]
   );
+
+  
+
   return (
     <>
       <button
@@ -65,6 +69,7 @@ const AddReview = ({ movie }) => {
           </form>
         </div>
       )}
+      <div className="mt-2">{handleChange(addReviewMutation)}</div>
     </>
   );
 };

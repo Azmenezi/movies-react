@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import AddMovie from "./AddMovie";
 import StaffContext from "../../context/StaffContext";
 import { useAddRemoveWatchlist } from "../../api/watchlist";
+import { addingToWatchlist } from "../../func/functions";
 
 const RecommendedCard = ({ movies, error, status }) => {
   const [staff, setStaff] = useContext(StaffContext);
@@ -10,20 +11,6 @@ const RecommendedCard = ({ movies, error, status }) => {
 
   const addRemoveWatchlist = useAddRemoveWatchlist(); // Call the custom hook
   const [addingReview, setAddingReview] = useState(null);
-  const addingToWatchlist = () => {
-    if (addRemoveWatchlist?.data?.error?.message)
-      return (
-        <div className="bg-red-400 flex justify-center items-center h-8 rounded text-white">
-          succesfully removed from watchlist
-        </div>
-      );
-    if (addRemoveWatchlist?.data?.message)
-      return (
-        <div className="bg-green-400  flex justify-center items-center h-8 rounded text-white">
-          succesfully added to your watchlist
-        </div>
-      );
-  };
   const handleAddRemoveWatchlist = async (id) => {
     try {
       await addRemoveWatchlist.mutateAsync(id); // Call the hook function
@@ -41,6 +28,11 @@ const RecommendedCard = ({ movies, error, status }) => {
 
   return (
     <>
+     {staff && (
+        <div className="mx-4 mt-5">
+          <AddMovie />
+        </div>
+      )}
       <div className="grid grid-cols-3 gap-2 m-3">
         {movies?.map((movie) => (
           <div className="border p-4" key={movie.movie._id}>
@@ -69,7 +61,7 @@ const RecommendedCard = ({ movies, error, status }) => {
             <div>
               {addingReview &&
                 addingReview === movie.movie._id &&
-                addingToWatchlist()}
+                addingToWatchlist(addRemoveWatchlist)}
             </div>
           </div>
         ))}

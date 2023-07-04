@@ -1,17 +1,18 @@
 // src/components/AddMovie.js
 import { useState } from "react";
 import { useAddMovie } from "../../api/movies";
+import { handleAddingMovie } from "../../func/functions";
 
 function AddMovie() {
   const [isOpen, setIsOpen] = useState(false);
   const [name, setName] = useState("");
   const [releaseDate, setReleaseDate] = useState("");
 
-  const { mutate } = useAddMovie();
+  const addMovieMutation = useAddMovie();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    mutate(
+    addMovieMutation.mutate(
       { name, releaseDate },
       {
         onSuccess: () => {
@@ -25,12 +26,14 @@ function AddMovie() {
 
   return (
     <div>
+      <div  className="flex justify-center">
       <button
-        className="px-4 py-2 bg-blue-500 text-white rounded"
+        className="px-4 py-2 bg-blue-500 text-white rounded flex justify-center"
         onClick={() => setIsOpen(true)}
       >
         Add Movie
       </button>
+      </div>
       {isOpen && (
         <div className="fixed top-0 left-0 w-screen h-screen flex items-center justify-center bg-black bg-opacity-50">
           <form onSubmit={handleSubmit} className="bg-white p-4 rounded">
@@ -73,6 +76,7 @@ function AddMovie() {
           </form>
         </div>
       )}
+      <div className="mt-2">{handleAddingMovie(addMovieMutation)}</div>
     </div>
   );
 }
